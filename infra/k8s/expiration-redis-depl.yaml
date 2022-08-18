@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-expiration-redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-expiration-redis
+  template:
+    metadata:
+      labels:
+        app: tix-expiration-redis
+    spec:
+      containers:
+        - name: tix-expiration-redis
+          image: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tix-expiration-redis-srv
+spec:
+  selector:
+    app: tix-expiration-redis
+  ports:
+    - name: tix-auth-db
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

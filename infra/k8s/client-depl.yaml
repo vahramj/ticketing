@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-client-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-client
+  template:
+    metadata:
+      labels:
+        app: tix-client
+    spec:
+      containers:
+        - name: tix-client
+          image: vahramj/tix-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tix-client-srv
+spec:
+  selector:
+    app: tix-client
+  ports:
+    - name: tix-client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

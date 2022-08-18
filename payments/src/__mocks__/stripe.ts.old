@@ -1,0 +1,7 @@
+export const stripe = {
+	charges: {
+		// The actional stripe.charges.create() func returns a promise. To imitate that,
+		// this will make sure that the create mock function will get resolved with an {}
+		create: jest.fn().mockResolvedValue({}),
+	},
+};

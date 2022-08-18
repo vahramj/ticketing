@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-tickets-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-tickets
+  template:
+    metadata:
+      labels:
+        app: tix-tickets
+    spec:
+      containers:
+        - name: tix-tickets
+          image: vahramj/tix-tickets
+          # image: us.gcr.io/ticketing-dev-342023/auth
+          # listing all env vars we want to have access to in this container
+          # [if these env vars end up on the container,
+          # how do they get placed on the nodejs process?]
+          env:
+            # name of the env var as it shows up inside the container
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  # this is the name of the k8s secret object we made with this command
+                  # kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf
+                  name: jwt-secret
+                  # this will grab the value of the key/value pair we set on the secret object.
+                  key: JWT_KEY
+            - name: MONGODB_URI
+              value: 'mongodb://tix-tickets-mongo-srv:27017/tickets'
+            - name: STAN_CLUSTER_ID
+              value: ticketing
+            - name: STAN_URL
+              value: 'http://nats-srv:4222'
+            - name: STAN_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  # this will make sure k8s uses the pod's name as client id
+                  # => both random and unique and useful for debugging
+                  fieldPath: metadata.name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tix-tickets-srv
+spec:
+  selector:
+    app: tix-tickets
+  ports:
+    - name: tix-tickets
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

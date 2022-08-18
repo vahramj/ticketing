@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-auth
+  template:
+    metadata:
+      labels:
+        app: tix-auth
+    spec:
+      containers:
+        - name: tix-auth
+          image: vahramj/tix-auth
+          # image: us.gcr.io/ticketing-dev-342023/auth
+          # listing all env vars we want to have access to in this container
+          # [if these env vars end up on the container,
+          # how do they get placed on the nodejs process?]
+          env:
+            # name of the env var as it shows up inside the container
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  # this is the name of the k8s secret object we made with this command
+                  # kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf
+                  name: jwt-secret
+                  # this will grab the value of the key/value pair we set on the secret object.
+                  key: JWT_KEY
+            - name: MONGODB_URI
+              value: mongodb://tix-auth-mongo-srv:27017/auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tix-auth-srv
+spec:
+  selector:
+    app: tix-auth
+  ports:
+    - name: tix-auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

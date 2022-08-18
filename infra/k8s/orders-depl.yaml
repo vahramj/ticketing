@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-orders-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-orders
+  template:
+    metadata:
+      labels:
+        app: tix-orders
+    spec:
+      containers:
+        - name: tix-orders
+          image: vahramj/tix-orders
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+            - name: MONGODB_URI
+              value: 'mongodb://tix-orders-mongo-srv:27017/orders'
+            - name: STAN_CLUSTER_ID
+              value: ticketing
+            - name: STAN_URL
+              value: 'http://nats-srv:4222'
+            - name: STAN_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tix-orders-srv
+spec:
+  selector:
+    app: tix-orders
+  ports:
+    - name: tix-orders
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

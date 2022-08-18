@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-tickets-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-tickets-mongo
+  template:
+    metadata:
+      labels:
+        app: tix-tickets-mongo
+    spec:
+      containers:
+        - name: tix-tickets-mongo
+          image: mongo
+          #
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tix-tickets-mongo-srv
+spec:
+  selector:
+    app: tix-tickets-mongo
+  ports:
+    - name: tix-tickets-db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

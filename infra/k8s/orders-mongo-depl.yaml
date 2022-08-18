@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-orders-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-orders-mongo
+  template:
+    metadata:
+      labels:
+        app: tix-orders-mongo
+    spec:
+      containers:
+        - name: tix-orders-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tix-orders-mongo-srv
+spec:
+  selector:
+    app: tix-orders-mongo
+  ports:
+    - name: tix-orders-db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

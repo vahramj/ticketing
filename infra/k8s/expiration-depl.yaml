@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-expiration-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-expiration
+  template:
+    metadata:
+      labels:
+        app: tix-expiration
+    spec:
+      containers:
+        - name: tix-expiration
+          image: vahramj/tix-expiration
+          env:
+            - name: STAN_CLUSTER_ID
+              value: ticketing
+            - name: STAN_URL
+              value: 'http://nats-srv:4222'
+            - name: STAN_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: REDIS_HOST
+              value: tix-expiration-redis-srv
+# we don't need a service for this pod, because it will communicate with others
+# only through NATS/STAN

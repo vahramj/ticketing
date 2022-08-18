@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tix-auth-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tix-auth-mongo
+  template:
+    metadata:
+      labels:
+        app: tix-auth-mongo
+    spec:
+      containers:
+        - name: tix-auth-mongo
+          image: mongo
+          #
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tix-auth-mongo-srv
+spec:
+  selector:
+    app: tix-auth-mongo
+  ports:
+    - name: tix-auth-db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
