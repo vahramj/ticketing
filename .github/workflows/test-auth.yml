@@ -1,9 +1,13 @@
-name: tests
+name: test-auth
 
 # Controls when the workflow will run
 on:
   # by default pull_request workflow runs for opened, synchronize(i.e. updated), or reopened activity types
   pull_request:
+    # will make sure this workflow runs only when PR changes apply to auth folder/service
+    # This will avoid unnecessary test runs if a service didn't change
+    paths:
+      - 'auth/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
