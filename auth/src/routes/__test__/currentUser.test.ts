@@ -13,7 +13,7 @@ describe('GET /api/users/currentUser', () => {
 		const response = await request(app)
 			.get('/api/users/currentUser')
 			.set('Cookie', cookie)
-			.expect(200);
+			.expect(400);
 		expect(response.body.currentUser.email).toBe(email);
 	});
 
