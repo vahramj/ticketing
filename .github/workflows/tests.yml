@@ -1,0 +1,21 @@
+name: tests
+
+# Controls when the workflow will run
+on:
+  # by default pull_request workflow runs for opened, synchronize(i.e. updated), or reopened activity types
+  pull_request:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner[container?] that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # runs npm install on our auth service and then runs it's tests
+      - run: cd auth && npm i && npm run test:ci
