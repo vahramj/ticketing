@@ -18,7 +18,7 @@ jobs:
       # ubuntu-latest runner comes with docker installed, so we can just use docker commands
       - run: cd auth && docker build -t vahramj/tix-auth .
       # logging into docker cli
-      - run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+      - run: docker login -u $DOCKERHUB_USERNAME --password-stdin $DOCKERHUB_PASSWORD
         env:
           # github secrets don't automatically get added on docker as env vars.
           # This takes secrets set on github and makes them into env vars,
