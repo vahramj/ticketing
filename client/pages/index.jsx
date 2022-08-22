@@ -24,7 +24,7 @@ export default function LandingPage({ currentUser, tickets }) {
 
 	return (
 		<div>
-			<h1>{message}</h1>
+			<h2>{message}</h2>
 			<table className="table">
 				<thead>
 					<tr>
