@@ -2,6 +2,7 @@ import { OrderCreatedListener } from './events/listeners/order-created-listner';
 import { stanWrapper } from './stan-wrapper';
 
 async function start() {
+	console.log('starting the expiration service ...');
 	if (!process.env.STAN_CLUSTER_ID) {
 		throw new Error('STAN_CLUSTER_ID must be defined');
 	}
