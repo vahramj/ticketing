@@ -6,6 +6,7 @@ import { OrderCreatedListener } from './events/listeners/OrderCreatedListener';
 import { stanWrapper } from './stan-wrapper';
 
 async function start() {
+	console.log('starting the payments service yo! ....');
 	if (!process.env.JWT_KEY) {
 		throw new Error('JWT_KEY must be defined');
 	}
