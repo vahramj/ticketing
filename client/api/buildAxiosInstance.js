@@ -11,7 +11,7 @@ export default function buildAxiosInstance({ req }) {
 				// like above?
 				// Why do we need to send them to an external address?]
 				// [Also, shouldn't this depend on the env, prod or dev?]
-				'http://jeenj.com',
+				'http://www.jeenj.com',
 			headers: req.headers,
 		});
 	} else {
