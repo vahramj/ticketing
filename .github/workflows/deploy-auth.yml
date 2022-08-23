@@ -2,9 +2,9 @@ name: deploy-auth
 
 on:
   # Triggers the workflow on push event but only for the "master" branch
-    # i.e. this will happen when we merge a PR into master
+  # i.e. this will happen when we merge a PR into master
   push:
-    branches: 
+    branches:
       - master
     paths:
       - 'auth/**'
@@ -22,7 +22,7 @@ jobs:
         env:
           # github secrets don't automatically get added on docker as env vars.
           # This takes secrets set on github and makes them into env vars,
-            # so that they can be used by the run command above
+          # so that they can be used by the run command above
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       - run: docker push vahramj/tix-auth
@@ -31,7 +31,7 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       # loads up the remote ticketing context on digital ocean. Same as we did locally.
-      - run: doctl kubernetes cluster kubeconfig save ticketing
+      - run: doctl kubernetes cluster kubeconfig save ticketing2
       # restarts a deployment, i.t.c. tix-auth-depl
-      # kubectl comes pre-installed on github action runner        
+      # kubectl comes pre-installed on github action runner
       - run: kubectl rollout restart deployment tix-auth-depl
