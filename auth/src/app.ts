@@ -22,11 +22,15 @@ app.use(
 	cookieSession({
 		// signed indicates if the cookie is encrypted, i.d.c. we don't encrypt it
 		signed: false,
-		// secure makes sure cookies are sent only when the connection is https
-		// we want to set the cookie for http reqs when testing,
-		// so that we don't have to make https requests.
-		// [This seems like a cheat to me.]
-		secure: process.env.NODE_ENV !== 'test',
+		// // secure makes sure cookies are sent only when the connection is https
+		// // we want to set the cookie for http reqs when testing,
+		// // so that we don't have to make https requests.
+		// // [This seems like a cheat to me.]
+		// secure: process.env.NODE_ENV !== 'test',
+
+		// We allow the cookies to be set for http connections since our deployment
+		// on digital ocean is not setup to use https
+		secure: false,
 	}),
 );
 
