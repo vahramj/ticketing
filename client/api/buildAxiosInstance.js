@@ -5,6 +5,7 @@ export default function buildAxiosInstance({ req }) {
 	const isUsedInNodeJS = typeof window === 'undefined';
 	if (isUsedInNodeJS) {
 		axiosInstance = axios.create({
+			// lalalala
 			baseURL:
 				// 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
 				// [Weren't these requests sent to nginx from our cluster internally,
